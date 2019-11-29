@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block title %}
+	Todo
+{% endblock %}
+
+{% block body %}
+<header><h2 align="right"> <a href="{{ url_for('logout') }}">  Logout </a> </h2> </header>
+	<div class="col-md-6">	
+		<form method="post" action="{{url_for('search', pageno=page)}}">
+			<div class="form-group">
+				<input name="search" placeholder="Search for books by ISBN, Title, Author" size="35">
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary">Search</button>
+			</div>
+		</form>
+	</div>
+
+{% endblock %}

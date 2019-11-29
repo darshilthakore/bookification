@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block title %}
+	Redirect
+{% endblock %}
+
+{% block body %}
+
+	<div class="{{prompt}}" role="alert">
+		{{message}}		
+	</div>
+	<a href="{{ url_for('index') }}">Go back to Login Page</a>
+{% endblock %}

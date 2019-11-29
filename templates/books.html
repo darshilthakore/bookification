@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Page {{ page }}
+{% endblock %}
+
+{% block body %}
+
+	<div class="container">
+		<h2>Search Results : Page {{ page }}</h2>
+		{% for i in range(start_pos, start_pos+items_per_page) %}
+			<div class="row">
+				<div class="col-sm-4"> {{ books[i].isbn }}</div>
+				<div class="col-sm-4">{{ books[i].title }} by {{ books[i].author }}, {{ books[i].year }}</div>
+				<div class="col-sm-4"><a href="{{ url_for('review') }}">Review</a></div>
+			</div>
+		{% endfor %}
+
+	</div>
+	<a href="{{ url_for('next', pageno=page-1)}}"> Previous Page</a>
+	<a href="{{ url_for('next', pageno=page+1)}}"> Next Page</a>
+
+
+
+
+{% endblock %}
