@@ -1,0 +1,13 @@
+.header{
+	background-color: skyblue;
+}
+
+.search{
+	position: absolute;
+	top: 200px;
+	left: 200px;
+}	
+
+#search-btn{
+	align-self: center;
+}
