@@ -1,0 +1,8 @@
+{% extends "layout2.html" %}
+{% block title %}
+	{{message}}
+{% endblock %}
+{% block body %}
+	<h1>{{message}}</h1>
+	<a href="{{url_for('back', isbn=isbn)}}">Go back</a>
+{% endblock %}

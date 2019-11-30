@@ -2,18 +2,19 @@
 <html>
 	<head>
 		<title>{% block title %}{% endblock %}</title>
-	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
 		<link rel="stylesheet" type="text/css" href="style.css">
 
-
 	</head>
 	<body>
-		<header><h2 class="dt">Bookification: Reading is Fun!</h2></header>
-		<div class="container">
-			{% block body %}
-			{% endblock %}
-		</div>
+		<header id="header"><h2>Bookification: Reading is Fun! <h3 align="right"><a href="{{ url_for('logout') }}">Logout</a></h3></h2></header>
+		<!-- <header><h2 align="right"> <a href="{{ url_for('logout') }}">  Logout </a> </h2> </header> -->
+			<div class="container">
+				{% block body %}
+				{% endblock %}
+			</div>
+
 
 	</body>
 </html>

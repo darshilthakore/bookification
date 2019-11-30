@@ -1,9 +1,12 @@
 import os
+import requests
+import json
 
 from flask import Flask, session, render_template, request, redirect, url_for, flash
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+
 
 app = Flask(__name__)
 
@@ -102,8 +105,35 @@ def next(pageno,search_text):
 	books = books[start_pos-1:start_pos+19]
 	return render_template("books.html", page=page, books=books, search_text=search_text,total_results=total_results)
 
-@app.route("/review", methods=["POST","GET"])
-def review():
-	return render_template("review.html")
 
 
+@app.route("/review/<isbn>")
+def review(isbn):	
+	# params = {"isbns":isbn,"key":"2j7EUzQg96bbhWH9tyuv7A"}
+	r = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "2j7EUzQg96bbhWH9tyuv7A", "isbns": isbn})
+	if r.status_code != 200:
+		raise Exception("ERROR: API request unsuccessful.")
+
+	data = r.json()
+	book = db.execute("SELECT isbn, title, author, year FROM books WHERE isbn = :isbn", {"isbn":isbn}).fetchone()
+
+	return render_template("review.html",data=data,book=book)
+
+
+@app.route("/review/<isbn>/success", methods=["POST","GET"])
+def post_review(isbn):
+	if request.method == "POST":
+		review = request.form.get("user_review")
+		rating = request.form.get("rating")
+		isbn = isbn
+		if 'username' in session:
+			username = session['username']
+			if db.execute("SELECT isbn FROM reviews WHERE username = :username AND isbn = :isbn", {"username":username,"isbn":isbn}).rowcount != 0:
+				return render_template("success.html", message="User has already posted a review for this book",isbn=isbn)
+			db.execute("INSERT INTO reviews (username, isbn, review, rating) VALUES (:username, :isbn, :review, :rating)", {"username":username,"isbn":isbn,"review":review,"rating":rating})
+			db.commit()
+			return render_template("success.html", message="Review posted Successfully",isbn=isbn)
+
+@app.route("/review/<isbn>")
+def back():
+	return redirect(url_for('review',isbn))

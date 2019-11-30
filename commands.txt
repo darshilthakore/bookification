@@ -2,7 +2,7 @@ export FLASK_APP=application.py
 export FLASK_DEBUG=1
 export DATABASE_URL=postgres://ranpflhaqmbzqy:42001e5fc1ba560ca03f1b063a4ac2cee61666009cf4e83b4ce28f99bf9a6d07@ec2-174-129-254-235.compute-1.amazonaws.com:5432/df30u59pp5l3lc
 
-
+//goodreads api key : 2j7EUzQg96bbhWH9tyuv7A
 
 SELECT * from books WHERE isbn LIKE '%ish%' OR title LIKE '%ish%' OR author LIKE '%ish%'
 
@@ -23,7 +23,13 @@ CREATE TABLE books (
 	year INTEGER NOT NULL
 );
 
-
+CREATE TABLE reviews (
+	no SERIAL,
+	username VARCHAR(255) NOT NULL,
+	isbn VARCHAR(255) NOT NULL,
+	review TEXT NOT NULL,
+	rating INTEGER NOT NULL
+);
 
 
 

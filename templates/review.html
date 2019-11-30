@@ -1,9 +1,44 @@
-{% extends "layout.html" %}
+{% extends "layout2.html" %}
 {% block title %}
-To DO
+{{book.title}}
 {% endblock %}
 
 {% block body %}
-	<h2>To do</h2>
+	<h2>{{book.title}} by {{book.author}}</h2>
+	<h3>Book Description</h3>
+
+	<ul>
+		<li>Book Name : {{book.title}}</li>
+		<li>Author : {{book.author}} </li>
+		<li>Year published : {{book.year}}</li>
+		<li>ISBN : {{data['books'][0]['isbn']}}</li>
+		<li>Average Rating : {{data['books'][0]['average_rating']}}</li>
+		<li>Total rating : {{data['books'][0]['reviews_count']}}</li>
+	</ul>
+
+<div class="container">
+	<h3>Give your review for the book and rate it.</h3>
+
+	<form action="{{ url_for('post_review', isbn=book.isbn)}}" method="post">
+		<div class="form-group">
+			<textarea name="user_review" rows="10" cols="30"></textarea>			
+		</div>
+		<div class="form-group">
+			<select name="rating">
+				<option value="1">1 star</option>
+				<option value="2">2 star</option>
+				<option value="3">3 star</option>
+				<option value="4">4 star</option>
+				<option value="5">5 star</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<button class="btn btn-primary">Submit</button>
+		</div>
+
+	</form>
+</div>
+
+
 
 {% endblock %}

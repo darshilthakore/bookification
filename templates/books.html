@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layout2.html" %}
 
 {% block title %}
 Page {{ page }}
@@ -19,7 +19,7 @@ Page {{ page }}
 				<div class="col-sm-3">{{ book.searchid }}</div>
 				<div class="col-sm-3">{{ book.isbn }}</div>
 				<div class="col-sm-3">{{ book.title }} by {{ book.author }}, {{ book.year }}</div>
-				<div class="col-sm-3"><a href="{{ url_for('review') }}">Review</a></div>
+				<div class="col-sm-3"><a href="{{ url_for('review', isbn=book.isbn) }}">Review</a></div>
 			</div>
 		{% endfor %}
 
