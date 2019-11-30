@@ -2,7 +2,7 @@ import os
 import requests
 import json
 
-from flask import Flask, session, render_template, request, redirect, url_for, flash
+from flask import Flask, session, render_template, request, redirect, url_for, flash, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -134,6 +134,26 @@ def post_review(isbn):
 			db.commit()
 			return render_template("success.html", message="Review posted Successfully",isbn=isbn)
 
+
+
 @app.route("/review/<isbn>")
 def back():
 	return redirect(url_for('review',isbn))
+
+
+
+
+@app.route("/api/<isbn>")
+def books_api(isbn):
+	isbn = isbn
+	book = db.execute("SELECT books.isbn, books.title, books.author, books.year, COUNT(review) AS review_count, AVG(rating) AS average_score FROM books JOIN reviews ON books.isbn = reviews.isbn WHERE books.isbn = :isbn GROUP BY books.title, books.author, books.year, books.isbn", {"isbn":isbn}).fetchone()
+	if book is None:
+		return jsonify({"error": "book not found"}), 404
+	return jsonify({
+            "title": book.title,
+            "author": book.author,
+            "year": book.year,
+            "isbn": book.isbn,
+            "review_count": book.review_count,
+            "average_score": float(book.average_score)
+        })

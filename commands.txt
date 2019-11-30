@@ -34,3 +34,8 @@ CREATE TABLE reviews (
 
 
 books = db.execute("SELECT * FROM books WHERE (no BETWEEN 1 AND 20) AND (isbn LIKE '%grisham%' OR title LIKE '%grisham%' OR author LIKE '%grisham%')",{"start_pos":start_pos,"search_text":search_text}).fetchall()
+
+
+
+
+SELECT books.title, books.author, books.year, COUNT(review) AS Noofreviews,AVG(rating) AS avgrating FROM books JOIN reviews ON books.isbn = reviews.isbn GROUP BY books.title, books.author, books.year;
