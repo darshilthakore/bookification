@@ -79,24 +79,28 @@ def register():
 def search(pageno):
 	if request.method == "POST":
 		search_text = request.form.get("search")
+		search_text = '%' + search_text + '%'
 		page = pageno
 		items_per_page = 20
 		start_pos = 1 if page == 1 else items_per_page*(page-1)+1
-		if search_text == '':
-			books = db.execute("SELECT * FROM books WHERE no BETWEEN :start_pos AND :start_pos+19",{"start_pos":start_pos}).fetchall()
-			
-			return render_template("books.html", books=books,page=page)
-		books = db.execute("SELECT * from books WHERE isbn LIKE '%:search_text%' OR title LIKE '%:search_text%' OR author LIKE '%:search_text%'", {"search_text": search_text}).fetchall()  
+				
+		books = db.execute("SELECT *, ROW_NUMBER() OVER() searchid FROM books WHERE (isbn LIKE :search_text OR title LIKE :search_text OR author LIKE :search_text)",{"search_text":search_text}).fetchall()
+		total_results = len(books)
+		books = books[start_pos-1:start_pos+19]
+		return render_template("books.html", books=books,page=page, search_text=search_text,total_results=total_results)
+		# books = db.execute("SELECT * from books WHERE isbn LIKE '%:search_text%' OR title LIKE '%:search_text%' OR author LIKE '%:search_text%'", {"search_text": search_text}).fetchall()  
 
 
 
-@app.route("/next/<int:pageno>")
-def next(pageno):
+@app.route("/next/<int:pageno>&<search_text>")
+def next(pageno,search_text):
 	page = pageno
 	items_per_page = 20
 	start_pos = 1 if page == 1 else items_per_page*(page-1)+1
-	books = db.execute("SELECT * FROM books WHERE no BETWEEN :start_pos AND :start_pos+19",{"start_pos":start_pos}).fetchall()
-	return render_template("books.html", page=page, books=books)
+	books = db.execute("SELECT *, ROW_NUMBER() OVER() searchid FROM books WHERE (isbn LIKE :search_text OR title LIKE :search_text OR author LIKE :search_text)",{"search_text":search_text}).fetchall()
+	total_results=len(books)
+	books = books[start_pos-1:start_pos+19]
+	return render_template("books.html", page=page, books=books, search_text=search_text,total_results=total_results)
 
 @app.route("/review", methods=["POST","GET"])
 def review():

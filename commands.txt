@@ -22,3 +22,9 @@ CREATE TABLE books (
 	author VARCHAR(255) NOT NULL,
 	year INTEGER NOT NULL
 );
+
+
+
+
+
+books = db.execute("SELECT * FROM books WHERE (no BETWEEN 1 AND 20) AND (isbn LIKE '%grisham%' OR title LIKE '%grisham%' OR author LIKE '%grisham%')",{"start_pos":start_pos,"search_text":search_text}).fetchall()
