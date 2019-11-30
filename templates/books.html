@@ -8,11 +8,18 @@ Page {{ page }}
 
 	<div class="container">
 		<h2>Search Results : Page {{ page }}</h2>
-		{% for i in range(start_pos, start_pos+items_per_page) %}
 			<div class="row">
-				<div class="col-sm-4"> {{ books[i].isbn }}</div>
-				<div class="col-sm-4">{{ books[i].title }} by {{ books[i].author }}, {{ books[i].year }}</div>
-				<div class="col-sm-4"><a href="{{ url_for('review') }}">Review</a></div>
+				<div class="col-sm-3"><b>Book No.</b></div>
+				<div class="col-sm-3"><b>ISBN</b></div>
+				<div class="col-sm-3"><b>BOOK</b></div>
+				<div class="col-sm-3"><b>Review</b></div>
+			</div>
+		{% for book in books %}
+			<div class="row">
+				<div class="col-sm-3">{{ book.no }}</div>
+				<div class="col-sm-3">{{ book.isbn }}</div>
+				<div class="col-sm-3">{{ book.title }} by {{ book.author }}, {{ book.year }}</div>
+				<div class="col-sm-3"><a href="{{ url_for('review') }}">Review</a></div>
 			</div>
 		{% endfor %}
 

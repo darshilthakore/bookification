@@ -5,3 +5,20 @@ export DATABASE_URL=postgres://ranpflhaqmbzqy:42001e5fc1ba560ca03f1b063a4ac2cee6
 
 
 SELECT * from books WHERE isbn LIKE '%ish%' OR title LIKE '%ish%' OR author LIKE '%ish%'
+
+
+
+CREATE TABLE users (
+	name varchar(255),
+	username varchar(255),
+	password varchar(255)
+);
+
+
+CREATE TABLE books (
+	no SERIAL,
+	isbn VARCHAR(255) NOT NULL,
+	title VARCHAR(255) NOT NULL,
+	author VARCHAR(255) NOT NULL,
+	year INTEGER NOT NULL
+);
