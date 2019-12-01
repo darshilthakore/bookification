@@ -4,6 +4,7 @@ export DATABASE_URL=postgres://ranpflhaqmbzqy:42001e5fc1ba560ca03f1b063a4ac2cee6
 
 //goodreads api key : 2j7EUzQg96bbhWH9tyuv7A
 
+//query for retrieving searched parameters
 SELECT * from books WHERE isbn LIKE '%ish%' OR title LIKE '%ish%' OR author LIKE '%ish%'
 
 
@@ -30,6 +31,7 @@ CREATE TABLE reviews (
 	review TEXT NOT NULL,
 	rating INTEGER NOT NULL
 );
+
 
 
 

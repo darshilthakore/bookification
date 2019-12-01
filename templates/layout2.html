@@ -8,8 +8,17 @@
 
 	</head>
 	<body>
-		<header class="header"><h2>Bookification: Reading is Fun! <p align="right"><a href="{{ url_for('logout') }}">Logout</a></p></h2></header>
+		<header class="header"><img id="page-logo" src="../static/images/logo.jpg" align="left" width="50px" height="50px"><h2>Bookification: Reading is Fun!</h2>
+			<div class="topnav">
+			  <div class="topnav-right">
+			    <a href="{{url_for('logout')}}">Logout</a>
+			  </div>
+			</div>
+
+
+		</header>
 		<!-- <header><h2 align="right"> <a href="{{ url_for('logout') }}">  Logout </a> </h2> </header> -->
+		<!-- <p align="right"><a href="{{ url_for('logout') }}">Logout</a></p> -->
 			<div class="container">
 				{% block body %}
 				{% endblock %}

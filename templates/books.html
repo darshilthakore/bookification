@@ -7,7 +7,7 @@ Page {{ page }}
 {% block body %}
 
 	<div class="container">
-		<h2>Search Results : Page {{ page }} | No. of results : {{total_results}}</h2>
+		<h3>Search Results for keyword "{{search_text}}": Page {{ page }} | No. of results : {{total_results}}</h3>
 			<div class="row">
 				<div class="col-sm-3"><b>Result No.</b></div>
 				<div class="col-sm-3"><b>ISBN</b></div>
@@ -15,11 +15,15 @@ Page {{ page }}
 				<div class="col-sm-3"><b>Review</b></div>
 			</div>
 		{% for book in books %}
-			<div class="row">
-				<div class="col-sm-3">{{ book.searchid }}</div>
-				<div class="col-sm-3">{{ book.isbn }}</div>
-				<div class="col-sm-3">{{ book.title }} by {{ book.author }}, {{ book.year }}</div>
-				<div class="col-sm-3"><a href="{{ url_for('review', isbn=book.isbn) }}">Review</a></div>
+			<div class="list-group">
+				<div class="list-group-item">
+					<div class="row">
+						<div class="col-sm-3">{{ book.searchid }}</div>
+						<div class="col-sm-3">{{ book.isbn }}</div>
+						<div class="col-sm-3">{{ book.title }} by {{ book.author }}, {{ book.year }}</div>
+						<div class="col-sm-3"><a href="{{ url_for('review', isbn=book.isbn) }}">Review</a></div>
+					</div>
+				</div>
 			</div>
 		{% endfor %}
 

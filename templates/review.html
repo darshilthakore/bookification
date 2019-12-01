@@ -7,7 +7,7 @@
 	<h2>{{book.title}} by {{book.author}}</h2>
 	<h3>Book Description</h3>
 
-	<ul>
+<!-- 	<ul>
 		<li>Book Name : {{book.title}}</li>
 		<li>Author : {{book.author}} </li>
 		<li>Year published : {{book.year}}</li>
@@ -15,8 +15,20 @@
 		<li>Average Rating : {{data['books'][0]['average_rating']}}</li>
 		<li>Total rating : {{data['books'][0]['reviews_count']}}</li>
 	</ul>
+ -->
+
 
 <div class="container">
+	<div class="list-group">
+		<div class="list-group-item"><b>Book Name :</b> {{book.title}}</div>
+		<div class="list-group-item"><b>Author :</b> {{book.author}}</div>
+		<div class="list-group-item"><b>Year published :</b> {{book.year}}</div>
+		<div class="list-group-item"><b>ISBN :</b> {{data['books'][0]['isbn']}}</div>
+		<div class="list-group-item"><b>Average Rating :</b> {{data['books'][0]['average_rating']}}</div>
+		<div class="list-group-item"><b>Total rating :</b> {{data['books'][0]['reviews_count']}}</div>
+		
+	</div>
+
 	<h3>Give your review for the book and rate it.</h3>
 
 	<form action="{{ url_for('post_review', isbn=book.isbn)}}" method="post">
