@@ -17,6 +17,10 @@ On submitting the review, user will get a success/failure prompts if any.
 
 On clicking the "Log Out" button, which is present from the time a user has logged in on the top right corner, user will be logged out and redirected to the home page i.e. "index.html"
 
+On clicking the "Home" button, which is present from the time a user has logged in on the top left corner, user will be redirected to the page where he can perform another search.
+
+On the other hand, "layout.html" contains the layout for the website before a user has logged in, while "layout2.html" is the layout for the pages after a user has logged in.
+
 
 
 #API
