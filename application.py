@@ -4,11 +4,19 @@ import json
 
 from flask import Flask, session, render_template, request, redirect, url_for, flash, jsonify
 from flask_session import Session
-from sqlalchemy import create_engine
+from flask_login import LoginManager, login_user, UserMixin, logout_user, login_required
+from sqlalchemy import create_engine, Column, String
 from sqlalchemy.orm import scoped_session, sessionmaker
-
+from sqlalchemy.ext.declarative import declarative_base
 
 app = Flask(__name__)
+
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
 
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):
@@ -22,6 +30,21 @@ Session(app)
 # Set up database
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
+
+base = declarative_base()
+
+class User(UserMixin):
+	__table__ = "users"
+
+	def __init__(self, username):
+		self.username = username
+
+	def get_id(self):
+		return self.username
+
+@login_manager.user_loader
+def load_user(username):
+    return User(username)
 
 
 @app.route("/", methods=["POST","GET"])
@@ -47,6 +70,7 @@ def newuser():
 
 
 @app.route("/home", methods=["POST","GET"])
+@login_required
 def home():
 	page = 1
 	return render_template("home.html", page=page)
@@ -62,6 +86,8 @@ def login():
 	if res:
 		if res[0] == username:
 			session['username'] = username
+			user = User(username)
+			login_user(user, remember=True)
 			return redirect(url_for('home'))
 		return render_template("error.html", message="username or password is incorrect",prompt="alert alert-warning")
 	# flash("Login unsucessful!")
@@ -70,8 +96,10 @@ def login():
 
 
 @app.route("/logout")
+@login_required
 def logout():
 	session.pop('username',None)
+	logout_user()
 	return redirect(url_for('index'))
 
 @app.route("/register", methods=["POST"])
@@ -79,6 +107,7 @@ def register():
 	return render_template("register.html")
 
 @app.route("/search/<int:pageno>", methods=["POST","GET"])
+@login_required
 def search(pageno):
 	if request.method == "POST":
 		search_text = request.form.get("search")
@@ -96,6 +125,7 @@ def search(pageno):
 
 
 @app.route("/next/<int:pageno>&<search_text>")
+@login_required
 def next(pageno,search_text):
 	page = pageno
 	items_per_page = 20
@@ -108,6 +138,7 @@ def next(pageno,search_text):
 
 
 @app.route("/review/<isbn>")
+@login_required
 def review(isbn):	
 	# params = {"isbns":isbn,"key":"2j7EUzQg96bbhWH9tyuv7A"}
 	r = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "2j7EUzQg96bbhWH9tyuv7A", "isbns": isbn})
@@ -121,6 +152,7 @@ def review(isbn):
 
 
 @app.route("/review/<isbn>/success", methods=["POST","GET"])
+@login_required
 def post_review(isbn):
 	if request.method == "POST":
 		review = request.form.get("user_review")
@@ -137,6 +169,7 @@ def post_review(isbn):
 
 
 @app.route("/review/<isbn>")
+@login_required
 def back():
 	return redirect(url_for('review',isbn))
 
