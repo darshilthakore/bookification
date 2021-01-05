@@ -4,7 +4,7 @@ import json
 
 from flask import Flask, session, render_template, request, redirect, url_for, flash, jsonify
 from flask_session import Session
-from flask_login import LoginManager, login_user, UserMixin, logout_user, login_required
+from flask_login import LoginManager, current_user, login_user, UserMixin, logout_user, login_required
 from sqlalchemy import create_engine, Column, String
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -49,6 +49,9 @@ def load_user(username):
 
 @app.route("/", methods=["POST","GET"])
 def index():
+
+	if current_user.is_authenticated:
+		return redirect(url_for('home'))
 	# if request.method == "POST":
 	# 	name = request.form.get("name")
 	# 	username = request.form.get("username")
